@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhDictionary</title>
+    <link rel="stylesheet" href="s.css">
+    <script type="text/javascript" src="/eel.js"></script>
+    <link rel="shortcut icon" type="image/jpg" href="icon.png">
+</head>
+<body>
+    <nav class="nav">
+        <a class="nav__link" data-link style="color: #008fb3">asf</a>
+        <a href="index.html" class="nav__link" data-link>Home</a>
+        <a href="translate.html" class="nav__link" data-link>Translate</a>
+        <a href="synonym.html" class="nav__link" data-link>Synonyms</a>
+        <a href="definition.html" class="nav__link" data-link>Definition</a>
+        <a href="file.html" class="nav__link" data-link>File</a>
+        <a href="history.html" class="nav__link" data-link>History</a>
+        <a href="help.html" class="nav__link" data-link>Help</a>
+
+
+    </nav>
+    <div id="app">
+        <h1>Files</h1>
+        <b>Generate a Word file for</b>
+        <input type="file" name="def" id="def">
+        <div style="padding-top:10px; ">
+            <b>Select mode: </b>
+            <select style="width: 200px;" id="mode">
+            <option>Definitions for English words</option>
+            <option>Synonyms for English words</option>
+            <option>French-English translation</option>
+            <option>English-French translation</option>
+        </select>
+
+        </div>
+        <div style="padding-top: 10px;">
+        <b>Number of examples/synonyms: </b>
+        <select style="width: 30px;" id="number">
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>2</option>
+        </select>
+        <button id="button">Generate</button>
+    </div>
+    <div style="padding-top: 10px"><b id="Success" style="color:green;"></b></div>
+    
+    </div>
+    <script type="text/javascript">
+        var button = document.getElementById("button");
+        button.onclick = async function find(){
+
+            let status = document.getElementById("Success");
+            status.innerHTML = '';
+            var dir = document.getElementById("def").files[0].name;
+            let mode = document.getElementById("mode").value;
+            let number = document.getElementById("number").value;
+            if (mode=='Definitions for English words'){
+            let res = await eel.definition_file(dir,number)();
+        }
+        else if (mode=='Synonyms for English words'){
+            let res = await eel.synonyms_file(dir,number)();
+             }
+        else if (mode=='French-English translation'){
+            let res = await eel.fr_en_file(dir,number)();
+        }
+        else if (mode=='English-French translation'){
+            let res = await eel.en_fr_file(dir,number)();
+        };
+        status.innerHTML = 'Successfully generated!';
+        };
+
+
+    </script>
+    
+</body>
+</html>
