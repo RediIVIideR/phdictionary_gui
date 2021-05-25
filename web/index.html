@@ -11,13 +11,13 @@
 <body>
     <nav class="nav">
         <a class="nav__link" data-link style="color: #008fb3">asf</a>
-        <a href="index.html" class="nav__link" data-link>Home</a>
-        <a href="translate.html" class="nav__link" data-link>Translate</a>
-        <a href="synonym.html" class="nav__link" data-link>Synonyms</a>
-        <a href="definition.html" class="nav__link" data-link>Definition</a>
-        <a href="file.html" class="nav__link" data-link>File</a>
-        <a href="history.html" class="nav__link" data-link>History</a>
-        <a href="help.html" class="nav__link" data-link>Help</a>
+        <a href="javascript:void(0);" class="nav__link" id="home" data-link>Home</a>
+        <a href="javascript:void(0);" class="nav__link" id="translate" data-link>Translate</a>
+        <a href="javascript:void(0);" class="nav__link" id="synonym" data-link>Synonyms</a>
+        <a href="javascript:void(0);" class="nav__link" id="definition" data-link>Definition</a>
+        <a href="javascript:void(0);" class="nav__link" id='file' data-link>File</a>
+        <a href="javascript:void(0);" class="nav__link" id='history' data-link>History</a>
+        <a href="javascript:void(0);" class="nav__link" id="help" data-link>Help</a>
 
 
     </nav>
@@ -33,5 +33,219 @@
 
     	</ul>
     </div>
+    <script type="text/javascript">
+  		  	let home = document.getElementById('home');
+  		  	let translate_show = document.getElementById('translate');
+  		  	let definition_show = document.getElementById('definition');
+  		  	let synonym_show = document.getElementById('synonym');
+  		  	let file_show = document.getElementById('file');
+  		  	let history_show = document.getElementById('history');
+  		  	let help_show = document.getElementById('help');
+  		  	let div = document.getElementById('app');
+  		  	home.onclick = function home(){
+  		  		div.innerHTML = `<h1>PhDictionary</h1>
+    	<p>Helps you to find out meanings and translations of words!</p>
+    	<h2>Functionality</h2>
+    	<ul>
+    		<li>Translates from English to French</li>
+    		<li>Searchs for definitions for English words</li>
+    		<li>Finds synonyms for English words</li>
+    		<li>Generates an incredible Word file with definitions or synonyms for words</li>
+
+    	</ul>`;
+  		  	}
+  		  	translate_show.onclick = function translate_s(){
+  		  			div.innerHTML = `<h1>Translate</h1>
+        <b id="r">From</b>
+        <select id="from" class="sel">
+            <option>English</option>
+            <option>French</option>
+            <option>Russian</option>
+        </select>
+        <b id="ra">to</b>
+        <select id="to" class="sel">
+            <option>English</option>
+            <option>French</option>
+            <option>Russian</option>
+        </select>
+
+        <div id="inp">
+            <input type="text" name="fr" id="fr">
+            <p id="t">output</p>
+
+
+    </div>
+        <button id="btn" type="button">Translate</button>
+        <h1>Examples</h1>
+        <ul id="list">
+        </ul>`;
+        var button = document.getElementById("btn");
+button.onclick = async function translate(){
+
+let list = document.getElementById("list");
+list.innerHTML = '';
+
+
+        var from = document.getElementById("from").value;
+        var to = document.getElementById("to").value;
+        var trans = document.getElementById("fr").value;
+        var res = await eel.trans(from,to,trans)();
+        document.getElementById("t").innerHTML = res[0];
+        let examples = res[1];
+
+        
+
+        examples.forEach((item)=>{
+            let li = document.createElement("li");
+            li.innerText = item;
+            list.appendChild(li);
+        }) 
+
+    };
+
+
+  		  	};
+  definition_show.onclick = function defin_show(){
+
+div.innerHTML = `<h1>Definition</h1>
+    	<b>Search definition for</b>
+        <input type="text" name="def" id="def">
+        <button id="button">Find</button>
+        <h1>Meaning</h1>
+        <b id="res"></b>
+        <h1>Examples</h1>
+        <ul id="list"></ul>`
+ var button = document.getElementById("button");
+        button.onclick = async function find(){
+
+            let list = document.getElementById("list");
+            list.innerHTML = '';
+            document.getElementById("res").innerHTML = '';
+            var word = document.getElementById("def").value;
+             var res = await eel.definition(word)();
+            document.getElementById("res").innerHTML = res[0];
+
+            let examples = res[1];
+
+            examples.forEach((item)=>{
+            let li = document.createElement("li");
+            li.innerText = item;
+            list.appendChild(li);
+        })
+
+
+
+
+
+        };
+  };
+
+synonym_show.onclick = function syn(){
+
+div.innerHTML = `<h1>Synonyms</h1>
+        <b>Search synonyms for</b>
+        <input type="text" name="def" id="def">
+        <button id="button">Find</button>
+        <h1>Meaning</h1>
+        <b id="res"></b>
+        <h1>Related words</h1>
+        <ul id="list"></ul>`;
+      var button = document.getElementById("button");
+        button.onclick = async function find(){
+
+            let list = document.getElementById("list");
+            list.innerHTML = '';
+            document.getElementById("res").innerHTML = '';
+            var word = document.getElementById("def").value;
+             var res_s = await eel.synonyms(word)();
+             var res = await eel.definition(word)();
+            document.getElementById("res").innerHTML = res[0];
+
+            let examples = res_s;
+
+            examples.forEach((item)=>{
+            let li = document.createElement("li");
+            li.innerText = item;
+            list.appendChild(li);
+        })
+
+
+
+
+
+        };
+
+
+};
+ file_show.onclick = function fil(){
+
+div.innerHTML = `<h1>Files</h1>
+        <b>Generate a Word file for</b>
+        <input type="file" name="def" id="def">
+        <div style="padding-top:10px; ">
+            <b>Select mode: </b>
+            <select style="width: 200px;" id="mode">
+            <option>Definitions for English words</option>
+            <option>Synonyms for English words</option>
+            <option>French-English translation</option>
+            <option>English-French translation</option>
+        </select>
+
+        </div>
+        <div style="padding-top: 10px;">
+        <b>Number of examples/synonyms: </b>
+        <select style="width: 30px;" id="number">
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>2</option>
+        </select>
+        <button id="button">Generate</button>
+    </div>
+    <div style="padding-top: 10px"><b id="Success" style="color:green;"></b></div>
+    `;
+    var button = document.getElementById("button");
+        button.onclick = async function find(){
+
+            let status = document.getElementById("Success");
+            status.innerHTML = '';
+            var dir = document.getElementById("def").files[0].name;
+            let mode = document.getElementById("mode").value;
+            let number = document.getElementById("number").value;
+            if (mode=='Definitions for English words'){
+            let res = await eel.definition_file(dir,number)();
+        }
+        else if (mode=='Synonyms for English words'){
+            let res = await eel.synonyms_file(dir,number)();
+             }
+        else if (mode=='French-English translation'){
+            let res = await eel.fr_en_file(dir,number)();
+        }
+        else if (mode=='English-French translation'){
+            let res = await eel.en_fr_file(dir,number)();
+        };
+        status.innerHTML = 'Successfully generated!';
+        };
+
+
+
+
+ };
+
+ history_show.onclick = function hs(){
+div.innerHTML = `<h1>History</h1>
+    	<p>Coming soon</p>`;
+
+
+ };
+
+help_show.onclick = function helps(){
+	div.innerHTML = `<h1>Help</h1>
+    	<p>In case you faced some problems with this application</p>
+        <p>Please contact its creator via e-mail: maksimsserovmail.ru@gmail.com</p>`;
+};
+
+
+    </script>
 </body>
 </html>
